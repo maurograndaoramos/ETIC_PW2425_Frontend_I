@@ -1,0 +1,17 @@
+body,
+html {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 0;
+    overflow: hidden;
+    background-color: #757B82;
+    height: 100dvh;
+    width: 100vw;
+}
+
+button {
+    top: 10px;
+    left: 10px;
+}

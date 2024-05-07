@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula04</title>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="canvas" width="800" height="600"></canvas>
+
+    <div id="data-container"></div>
+
+
+    <button onclick="getData()">GET</button>
+    <button onclick="postData()">POST</button>
+
+    <form action="http://localhost:3000/formdata" method="post">
+        <label for="text-input">Text</label>
+        <input type="text" name="text" id="text-input">
+        <input type="submit" value="post">
+    </form>
+</body>
+</html>
