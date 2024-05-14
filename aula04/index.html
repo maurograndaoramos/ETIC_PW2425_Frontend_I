@@ -14,12 +14,14 @@
 
 
     <button onclick="getData()">GET</button>
-    <button onclick="postData()">POST</button>
 
-    <form action="http://localhost:3000/formdata" method="post">
-        <label for="text-input">Text</label>
-        <input type="text" name="text" id="text-input">
-        <input type="submit" value="post">
+    <form action="http://localhost:3000/data" method="post">
+        <label for="text-input">User</label>
+        <input type="text" name="text" id="text-input" placeholder="Type your Username">
+        <label for="text-input">Password</label>
+        <input type="text" name="password" id="password-input" placeholder="Type your Password">
+        <input type="submit" value="Submit">
+
     </form>
 </body>
 </html>

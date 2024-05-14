@@ -10,24 +10,43 @@ const port = 3000;
 app.use(cors()); // Use CORS middleware
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Sample JSON data
 let jsonData = {
   message: "Hello, world!"
 };
 
+
 // GET endpoint to retrieve JSON data
 app.get('/data', (req, res) => {
-  res.json(jsonData);
-});
 
+  console.log(jsonData);
+  res.json(jsonData);
+  
+});
 // POST endpoint to update JSON data
 app.post('/data', async (req, res) => {
   // Assuming JSON data is sent in the request body
   const newData = req.body;
+  console.log('dd', req.body);
+  // Update the JSON data
+  jsonData = newData;
+
+  // Send response
+  res.redirect( 'http://localhost:5500/')
+});
+
+// # FORMDATA
+// Another POST endpoint to update JSON data
+app.post('/formdata', async (req, res) => {
+  // Assuming form data is sent in the request body
+  const newData = req.body;
 
   // Update the JSON data
   jsonData = newData;
+
+  console.log('form Data updated:', newData);
 
   // Send response
   res.json({ message: "Data updated successfully" });
