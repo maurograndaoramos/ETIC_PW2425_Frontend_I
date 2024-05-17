@@ -1,0 +1,52 @@
+[
+  {
+    "title": "Mountain Landscape",
+    "description": "A majestic mountain range bathed in the golden light of sunset.",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA68LFhAhQeYdpdmIcKi0N0eWEqbdBH5V29jx7ACi-Ng&s"
+  },
+  {
+    "title": "Crystal Clear Lake",
+    "description": "A serene lake reflecting the clear blue sky and fluffy white clouds.",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRig035__pNEjxiPWrv_g-BlGQWehgMt9LhqdQyOdYbDw&s"
+  },
+  {
+    "title": "Vibrant Cityscape",
+    "description": "A bustling cityscape with towering skyscrapers and colorful lights.",
+    "imageUrl": "https://media.gettyimages.com/id/1202876374/pt/foto/adaptive-surfer-holding-her-surfboard-and-looking-out-towards-the-ocean.jpg?s=612x612&w=gi&k=20&c=0mbu0nkb_nAom16DBQnQVxigFEWm2QqEQHHi4xL8bX8="
+  },
+  {
+    "title": "Cozy Cabin",
+    "description": "A charming cabin nestled amongst the trees, perfect for a winter getaway.",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQpGJGKmrdNRailR2m-luE_odd9V4toBTFfzpL5IKsfg&s"
+  },
+  {
+    "title": "Tropical Beach",
+    "description": "A pristine beach with white sand, turquoise water, and swaying palm trees.",
+    "imageUrl": "https://media.istockphoto.com/id/143918363/photo/standing-tall.jpg?s=612x612&w=0&k=20&c=CmYEL5PCpEPRU8w1G3ppYPgBP9sUqApsC7Jtdenj3ek="
+  },
+  {
+    "title": "Starry Night Sky",
+    "description": "A breathtaking night sky filled with millions of twinkling stars.",
+    "imageUrl": "https://t4.ftcdn.net/jpg/00/56/21/77/360_F_56217796_MOvQQCsbfYXSSgaDN0gkERBjbL74nrrz.jpg"
+  },
+  {
+    "title": "Ancient Ruins",
+    "description": "Mysterious ruins of an ancient civilization, shrouded in history and mystery.",
+    "imageUrl": "https://media.gettyimages.com/id/1040907120/pt/foto/young-girl-surfing-at-sunset.jpg?s=612x612&w=gi&k=20&c=RhCaG4l0uXSQNoVXPtFJBEdbIaFNcEOYg_yKUyA3Ly0="
+  },
+  {
+    "title": "Blooming Flowers",
+    "description": "A field of vibrant flowers in full bloom, creating a tapestry of color.",
+    "imageUrl": "https://media.gettyimages.com/id/1052360552/pt/foto/little-girl-on-surfboard.jpg?s=612x612&w=gi&k=20&c=CQxJ87v8S6xhD7I-vEfNPfCk9Ri-iQO9x4spuyKSHiM="
+  },
+  {
+    "title": "Waterfall Cascade",
+    "description": "A powerful waterfall cascading down a steep cliff, surrounded by lush greenery.",
+    "imageUrl": "https://media.gettyimages.com/id/1286015446/pt/foto/female-surfers-running-on-the-beach-at-sunset.jpg?s=612x612&w=gi&k=20&c=hzwZWgVbmJlw6HOv_M8fkCSq9tLNEHmUg97i_rLwtFI="
+  },
+  {
+    "title": "Desert Landscape",
+    "description": "A vast and arid desert landscape with towering dunes and a vibrant sunset.",
+    "imageUrl": "https://media.gettyimages.com/id/1202876374/pt/foto/adaptive-surfer-holding-her-surfboard-and-looking-out-towards-the-ocean.jpg?s=612x612&w=gi&k=20&c=0mbu0nkb_nAom16DBQnQVxigFEWm2QqEQHHi4xL8bX8="
+  }
+]
