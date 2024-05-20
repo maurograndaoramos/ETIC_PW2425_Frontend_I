@@ -1,3 +1,5 @@
+// Gallery
+
 const template = document.createElement('template');
 template.innerHTML = `
     <style>
@@ -51,6 +53,8 @@ template.innerHTML = `
         </div>
 
         <web-toggle-button id="play-pause"></web-toggle-button>
+
+        <slot name="toggle-button">NEED TOGGLE BUTTON</slot>
         
     </div>
 `;
@@ -105,18 +109,9 @@ class WebGallery extends HTMLElement {
             this.#playPause();
         }
 
-        this.shadowRoot.querySelector('#play-pause').onclick = (ev) => {
-            console.log('play pause clicked');
+        this.shadowRoot.querySelector('#play-pause').addEventListener('toggle', () => {
             this.#playPause();
-
-            if(this.#intervalID) ev.target.innerText = "STOP";
-            else ev.target.innerText = "PLAY";
-
-            const event = new CustomEvent('play-pause', {detail: {
-                    isPlaying: this.#intervalID !== null 
-                }});
-            this.dispatchEvent(event);
-        }
+        });
 
     }
 
@@ -209,7 +204,7 @@ customElements.define('web-gallery', WebGallery);
 
 
 
-
+// Web Toggle
 
 
 const toggleTemplate = document.createElement('template');
@@ -244,19 +239,47 @@ class WebToggleButton extends HTMLElement {
 
     shadowRoot;
     #iconsContainer = null;
+    #toggled = true;
+
     constructor() {
         super();
         this.shadowRoot = this.attachShadow({ mode: 'closed' });
         this.shadowRoot.appendChild(toggleTemplate.content.cloneNode(true));
         this.#iconsContainer = this.shadowRoot.querySelector("#icons-container");
+        this.toggle();
     }
 
     connectedCallback() {
 
+        this.#iconsContainer.onclick = () => {
+
+            this.#toggled = !this.#toggled;
+            this.toggle();
+
+            const event = new CustomEvent('toggle', {detail: {
+                toggled: this.#toggled
+            }});
+            this.dispatchEvent(event);
+            
+        };
+
     }
 
-    attributeChangedCallback() {
+    toggle() {
+        if(this.#toggled) {
+            this.#iconsContainer.children[0].style.opacity = 1;
+            this.#iconsContainer.children[1].style.opacity = 0;
+        } else {
+            this.#iconsContainer.children[0].style.opacity = 0;
+            this.#iconsContainer.children[1].style.opacity = 1;
+        }
+    }
+
+    attributeChangedCallback(attrName, newVal, oldVal) {
+
+
 
     }
+
 }
 customElements.define('web-toggle-button', WebToggleButton);
