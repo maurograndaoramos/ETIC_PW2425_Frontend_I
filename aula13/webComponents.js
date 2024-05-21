@@ -39,6 +39,7 @@ template.innerHTML = `
             position: absolute;
             top: 10px;
             left: 10px;
+            z-index: 9999;
         }
         #images-container {
             position: relative;
@@ -54,9 +55,13 @@ template.innerHTML = `
     <div class="gallery">
 
         <div id="images-container"></div>
+
         <div id="play-pause">
             <slot name="toggle-button"></slot>
         </div>
+      
+
+        <!-- <web-toggle-button id="play-pause"></web-toggle-button> -->
 
         <div id="controls">
             <button id="previous">
@@ -125,8 +130,16 @@ class WebGallery extends HTMLElement {
             this.#playPause();
         }
 
-        const slotElement = this.shadowRoot.querySelector('slot[name="toggle-button"');
+        // const toggleButton = this.shadowRoot.querySelector("#play-pause");
+        // toggleButton.addEventListener("toggle", (ev) => {
+        //         this.#playPause();
+        //         const event = new CustomEvent('play-pause', {detail: {
+        //                 isPlaying: this.#intervalID !== null 
+        //             }});
+        //         this.dispatchEvent(event);
+        //     })
 
+        const slotElement = this.shadowRoot.querySelector('slot[name="toggle-button"');
         slotElement.addEventListener("slotchange", () => {
 
             const toggleButton = slotElement.assignedElements()[0];
@@ -179,7 +192,12 @@ class WebGallery extends HTMLElement {
             if(index === this.#currentItemIndex)  element.style.opacity = 1;
             this.#items.push(element);
             element.style.backgroundImage = `url(${item.imageUrl})`;
-
+            element.onclick = () => {
+                const customEvent = new CustomEvent("item-clicked", {detail: {
+                    data: item
+                }})
+                this.dispatchEvent(customEvent);
+            }
             this.#imagesContainer.appendChild(clone);
         });
 
@@ -200,9 +218,11 @@ class WebGallery extends HTMLElement {
 
             this.#intervalID = setInterval(() => {
                 this.#items[this.#currentItemIndex].style.opacity = 0;
+                this.#items[this.#currentItemIndex].style.zIndex = 9000;
                 this.#currentItemIndex++;
                 if(this.#currentItemIndex >= this.#items.length) this.#currentItemIndex = 0;
                 this.#items[this.#currentItemIndex].style.opacity = 1;
+                this.#items[this.#currentItemIndex].style.zIndex = 9998;
 
                //...
             }, 2000);
@@ -303,3 +323,64 @@ class WebToggleButton extends HTMLElement {
     }
 }
 customElements.define('web-toggle-button', WebToggleButton);
+
+
+const webGalleryDetailTemplate = document.createElement("template");
+webGalleryDetailTemplate.innerHTML = `
+<style>
+
+    @import url("system.css");
+
+    :host {
+
+        position: relative;
+    }
+    #detail-container {
+        width: 500px;
+        height: 500px;
+        background: orangered;
+    }
+
+    #close-detail {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+</style>
+
+<div id="detail-container"></div>
+<button id="close-detail">CLOSE</button>
+`
+
+class WebGalleryDetail extends HTMLElement {
+
+    shadowRoot;
+    #detailContainer = null;
+    #detailData = null;
+    constructor() {
+        super();
+        this.shadowRoot = this.attachShadow({ mode: 'closed' });
+        this.shadowRoot.appendChild(webGalleryDetailTemplate.content.cloneNode(true));
+
+        this.#detailContainer = this.shadowRoot.querySelector("#detail-container");
+
+        this.shadowRoot.querySelector("button").onclick = () => {
+
+            const customEvent = new CustomEvent("close-detail");
+            this.dispatchEvent(customEvent);
+        }
+    }
+
+    #render() {
+        this.#detailContainer.innerHTML = `
+            <h1>${this.#detailData.title}</h1>
+            <p>${this.#detailData.description}</p>
+        `
+    }
+
+    set data(value) {
+        this.#detailData = value;
+        this.#render();
+    }
+}
+customElements.define('web-gallery-detail', WebGalleryDetail);
