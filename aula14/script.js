@@ -7,8 +7,6 @@ window.onload = async () => {
     webGallery.addEventListener("item-clicked", (event) => {
         webGalleryDetail.data = event.detail.data;
 
-
-
         webGallery.style.opacity=0;
         webGallery.style.transform = "rotateY(-180deg)";
         webGallery.style.pointerEvents = "none";
@@ -30,40 +28,27 @@ window.onload = async () => {
 
     });
 
+
+
     const galleryModel = new GalleryModel();
     await galleryModel.initialize("assets/gallery_data.json");
     webGallery.data = galleryModel.data;
-
     webGallery.currentItem = 2;
 
-    // galleryModel.addItem({
-    //     "title": "New Item",
-    //     "description": "This is a description",
-    //     "imageURL": "assets/images/4.jpg"
 
-    // });
+    document.querySelector("#updater").onsubmit = (ev) => {
 
-    // const itemToUpdate = galleryModel.data[webGallery.currentItem];
-    // itemToUpdate.title = "Updated Item";
-    // galleryModel.updateItem(webGallery.currentItem, itemToUpdate);
-
-    // galleryModel.deleteItem(WebGallery.currentItem);
-
-    // galleryModel.reset();
-
-    document.querySelector("updater").onsubmit = (event) => {
-        event.preventDefault();
+        ev.preventDefault();
 
         const title = document.querySelector("#title").value;
-        const description = document.querySelector("#desc").value;
-        const imageURL = document.querySelector("#url").value;
+        const desc = document.querySelector("#desc").value;
+        const url = document.querySelector("#url").value;
 
         galleryModel.addItem({
-            "title": title,
-            "desc": description,
-            "url": url
+            title: title,
+            description: desc,
+            imageUrl: url
         });
-
-        console.log("Form submitted");
+        webGallery.data = galleryModel.data;
     }
-};
+}

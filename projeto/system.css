@@ -1,0 +1,20 @@
+:root {
+
+    /* COLOURS */
+    --color-primary: #FFA800;
+    --color-secondary: #BB0000;
+    --color-tertiary: #89BD54;
+    
+       /* FONT COLOURS */
+    --color-text-dark: #444444;
+    --color-text-light: #EEEEEE;
+
+    /* PADDING AND MARGINS */
+    --h-padding: 20px;
+    --v-padding: 20px;
+    --gap: 20px;
+    
+
+    --speed: 0.5s;
+}
+

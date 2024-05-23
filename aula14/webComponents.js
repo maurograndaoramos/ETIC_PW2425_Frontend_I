@@ -156,6 +156,7 @@ class WebGallery extends HTMLElement {
     async attributeChangedCallback(attrName, oldVal, newVal) {
 
         switch (attrName) {
+            
             case 'current-item':
                 this.#currentItemIndex = parseInt(newVal);
                 this.#render();
@@ -219,18 +220,16 @@ class WebGallery extends HTMLElement {
     }
 
     //SETTERS GETTERS
-    get data () {
+    get data() {
         return this.#galleryData;
     }
-
-    set data (value) {
+    set data(value) {
         this.#galleryData = value;
 
         const event = new CustomEvent('ready', {detail: {
             numberOfImages: this.#items.length
         }});
         this.dispatchEvent(event);
-
     }
 
     get currentItem() {
