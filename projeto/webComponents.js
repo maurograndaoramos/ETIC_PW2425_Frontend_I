@@ -1,3 +1,4 @@
+//TODO HEADER
 const headerTemplate = document.createElement('template');
 headerTemplate.innerHTML = `
     <style>
@@ -36,9 +37,10 @@ headerTemplate.innerHTML = `
 
         .icon {
             display: none;
-            width: 48px;
-            height: 48px;
+            width: clamp(32px, 4vw, 48px);
+            height: clamp(32px, 4vw, 48px);
             margin-left: auto;
+        }
 
     </style>
 
@@ -56,7 +58,7 @@ headerTemplate.innerHTML = `
 
 class TodoHeader extends HTMLElement {
 
-    static observedAttributes = ['state'];
+    static observedAttributes = ['state', 'task-name'];
 
     shadowRoot;
     #taskName;
@@ -75,21 +77,24 @@ class TodoHeader extends HTMLElement {
     }
 
     attributeChangedCallback(attrName, oldVal, newVal) {
-        if (attrName === 'state') {
 
-            if (newVal === 'tasks') {
-                this.#taskName.style.display = 'none';
-                this.#icon.style.display = 'none';
-            } 
-            else {
-                this.#taskName.style.display = 'initial';
-                this.#icon.style.display = 'initial';
-            }
+        switch (attrName) {
+            case 'state':
+                if (newVal === 'tasks') {
+                    this.#taskName.style.display = 'none';
+                    this.#icon.style.display = 'none';
+                } 
+                else {
+                    this.#taskName.style.display = 'initial';
+                    this.#icon.style.display = 'initial';
+                }
+                break;
+            case 'task-name':
+                this.#taskName.innerText = newVal;
+                break;
         }
     }
     
-
-
     get state() {
         return this.getAttribute('state');
     };
@@ -97,6 +102,223 @@ class TodoHeader extends HTMLElement {
     set state(val) {
         this.setAttribute('state', val);
     };
+
+    get taskName () {
+        return this.getAttribute('task-name');
+    }
+
+    set taskName(val) {
+        this.setAttribute('task-name', val);
+    }
 }
 
 customElements.define('todo-header', TodoHeader);
+
+//TASK ITEM
+const taskItemTemplate = document.createElement('template');
+taskItemTemplate.innerHTML = `
+    <style>
+        @import url("system.css");
+
+        .button {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            cursor: pointer;
+        }
+        
+        .button:active .front label,
+        .button:active .front .icon {
+            transform: scale(0.9);
+        }
+        
+        .front {
+            position: absolute;
+            display: flex;
+            inset: 0;
+            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #dddddd;
+            padding: 20px;
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        label {
+            font-size: 36px;
+            line-height: 36px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            user-select: none;
+            font-color: var(--color-text-dark);
+        }
+        
+        .icon {
+        
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            min-height: 48px;
+        }
+        
+        .back {
+            display: flex;
+            justify-content: flex-end;
+            background-color: var(--color-secondary);
+            padding: 20px;
+        }
+
+    </style>
+
+    <div class="button">
+        <div class="front">
+            <label>Examples</label>
+            <div class="icon">
+                <svg width="100%" height="100%" viewBox="0 0 24.342 24.342" fill="var(--color-text-dark)">
+                    <path
+                        d="m12.164 3.25e-7 12.177 12.171-12.177 12.171-3.6954-3.6954 5.8624-5.8624h-14.331v-5.226h14.331l-5.8624-5.8624z" />
+                </svg>
+            </div>
+        </div>
+
+        <div class="back">
+            <div class="icon">
+                <svg width="100%" height="100%" viewBox="0 0 24.342 24.342" fill="var(--color-text-light)">
+                    <path
+                        d="m12.171 8.4754-8.4754-8.4754-3.6954 3.6954 8.4754 8.4754-8.4754 8.4754 3.6954 3.6954 8.4754-8.4754 8.4754 8.4754 3.6954-3.6954-8.4754-8.4754 8.4754-8.4754-3.6954-3.6954z" />
+                </svg>
+            </div>
+        </div>
+    </div>
+`;
+
+class TaskItem extends HTMLElement {
+
+
+    shadowRoot;
+    button;
+    #front;
+    #touchX;
+    #maxX = 84;
+    #currentX;
+    #callback;
+    constructor() {
+        super();
+
+        this.shadowRoot = this.attachShadow({ mode: 'closed' });
+        this.shadowRoot.append(taskItemTemplate.content.cloneNode(true));
+
+        this.button = this.shadowRoot.querySelector(".button");
+
+        this.#front = this.shadowRoot.querySelector(".front");
+        
+        this.mouseUp = this.mouseUp.bind(this);
+        this.mouseMove = this.mouseMove.bind(this);
+
+        this.button.onmousedown = (ev) => this.#mouseDown(ev);
+        this.button.onclick = () => {
+            if(this.#currentX === 0) this.dispatchEvent(new CustomEvent('clicked'));
+        }
+    }
+
+    #mouseDown(ev) {
+
+        this.#touchX = ev.x
+        document.addEventListener("mouseup", this.mouseUp);
+        document.addEventListener("mousemove", this.mouseMove);
+        this.#front.style.transition = 'none';
+        this.#currentX = 0;
+    }
+
+    mouseUp() {
+        document.removeEventListener("mouseup", this.mouseUp);
+        document.removeEventListener("mousemove", this.mouseMove);
+
+        if(this.#currentX === this.#maxX) this.dispatchEvent(new CustomEvent('deleted'));
+
+        this.#front.style.transition = 'transform .15s ease-in-out';
+        this.#front.style.transform = 'translateX(0)';
+
+        this.#touchX = 0;
+    }
+    mouseMove(ev) {
+
+
+        this.#currentX = this.#touchX - ev.x;
+        if(this.#currentX < 0) this.#currentX = 0;
+        if(this.#currentX > this.#maxX) this.#currentX = this.#maxX;
+
+        this.#front.style.transform = `translateX(-${this.#currentX}px)`;
+    }
+}
+
+customElements.define('task-item', TaskItem);
+
+//LIST ITEM
+
+const listItemTemplate = document.createElement('template');
+listItemTemplate.innerHTML = `
+    <style>
+        @import url("system.css");
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            background-color: var(--color-secondary);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .list-item:hover {
+            background-color: var(--color-secondary-dark);
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            min-height: 48px;
+        }
+
+        label {
+            font-size: 36px;
+            line-height: 36px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            user-select: none;
+            font-color: var(--color-text-dark);
+        }
+
+    </style>
+
+    <div class="list-item">
+        <label>Examples</label>
+        <div class="icon">
+            <svg width="100%" height="100%" viewBox="0 0 24.342 24.342" fill="var(--color-text-light)">
+                <path
+                    d="m12.164 3.25e-7 12.177 12.171-12.177 12.171-3.6954-3.6954 5.8624-5.8624h-14.331v-5.226h14.331l-5.8624-5.8624z" />
+            </svg>
+        </div>
+    </div>
+`;
+
+class ListItem extends HTMLElement {
+
+    shadowRoot;
+    listItem;
+    constructor() {
+        super();
+
+        this.shadowRoot = this.attachShadow({ mode: 'closed' });
+        this.shadowRoot.append(listItemTemplate.content.cloneNode(true));
+
+        this.listItem = this.shadowRoot.querySelector('.list-item');
+        this.listItem.onclick = () => this.dispatchEvent(new CustomEvent('clicked'));
+    }
+}
+
+customElements.define('list-item', ListItem);

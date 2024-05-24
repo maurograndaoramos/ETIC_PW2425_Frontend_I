@@ -1,17 +1,17 @@
 [
     {
         "title": "List 1",
-        "items": [
+        "task": [
             {
-                "title": "Item 1",
+                "item": "Item 1",
                 "checked": "false"
             },
             {
-                "title": "Item 2",
+                "item": "Item 2",
                 "checked": "false"
             },
             {
-                "title": "Item 3",
+                "item": "Item 3",
                 "checked": "false"
             }
         ]
