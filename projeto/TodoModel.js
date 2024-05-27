@@ -3,14 +3,14 @@ export default class TodoModel {
     #tasks = [
         {
             title: "List 1",
-            item: [
+            items: [
                 {
                     title: "Item 1",
                     checked: "false"
                 },
                 {
                     title: "Item 2",
-                    checked: "false"
+                    checked: "true"
                 },
                 {
                     title: "Item 3",
@@ -26,6 +26,7 @@ export default class TodoModel {
         }
     }
 
+    // TASKS
     addTask(task) {
         this.#tasks.push(task);
         this.#updateLocalStorage();
@@ -38,6 +39,26 @@ export default class TodoModel {
 
     getTasks() {
         return JSON.parse(localStorage.getItem("todos"));
+    }
+
+    // CHECK ITEMS
+    addItem(taskIndex, item) {
+        this.#tasks[taskIndex].items.push(item);
+        this.#updateLocalStorage();
+    }
+
+    deleteItem(taskIndex, itemIndex) {
+        this.#tasks[taskIndex].items.splice(itemIndex, 1);
+        this.#updateLocalStorage();
+    }
+
+    getItems(taskIndex) {
+        return this.#tasks[taskIndex].items;
+    }
+
+    updateItem(taskIndex, itemIndex, value) {
+        this.#tasks[taskIndex].items[itemIndex].checked = value;
+        this.#updateLocalStorage();
     }
 
     #updateLocalStorage() {
