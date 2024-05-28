@@ -10,22 +10,21 @@
 html,
 body {
     display: flex;
-    height: 100dvh;
     width: 100%;
+    height: 100dvh;
     justify-content: center;
     align-items: center;
-    color: var(--color-text-dark);
 }
 
 main {
+    position: relative;
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
     max-width: 800px;
     max-height: 900px;
-
-    background-color: blue;
+    background-color: grey;
     overflow: hidden;
 }
 
@@ -41,6 +40,7 @@ main {
 ul {
     width: 100%;
     height: 100%;
+    overflow-y: scroll;
 }
 
 #tasks {
@@ -48,14 +48,13 @@ ul {
 }
 
 #items {
-    background-color: blue
+    background-color: blue;
 }
 
 footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     flex: 1;
     max-height: 88px;
     background-color: var(--color-primary);
+    padding: 10px;
+    cursor: pointer;
 }
