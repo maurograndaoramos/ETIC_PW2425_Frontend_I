@@ -24,8 +24,9 @@ main {
     height: 100%;
     max-width: 800px;
     max-height: 900px;
-    background-color: grey;
+    background-color: var (--color-text-light);
     overflow: hidden;
+    list-style-type: none;
 }
 
 #lists-container {
@@ -33,7 +34,6 @@ main {
     display: grid;
     grid-template-columns: 100% 100%;
     flex: 1;
-    background-color: red;
     transition: transform var(--speed) ease-in-out;
 }
 
@@ -44,11 +44,29 @@ ul {
 }
 
 #tasks {
-    background-color: purple;
+    background-color: var(--color-text-light);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+#tasks #empty-list {
+    font-size: clamp(32px, 4vw, 48px);
+    color: var(--color-text-dark);
+    padding: 20px;
+    opacity: 0.5;
 }
 
 #items {
-    background-color: blue;
+    background-color: var(--color-text-dark);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+#empty-list-items {
+    font-size: clamp(32px, 4vw, 48px);
+    color: var(--color-text-light);
+    padding: 20px;
+    opacity: 0.5;
 }
 
 footer {

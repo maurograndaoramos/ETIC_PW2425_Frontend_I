@@ -221,6 +221,7 @@ taskItemTemplate.innerHTML = `
         background-color: var(--color-secondary);
         padding: 20px;
     }
+
 </style>
 <div class="button">
     <div class="front">
@@ -437,6 +438,17 @@ todoModalTemplate.innerHTML = `
         transition: opacity var(--speed) ease-in-out;
     }
 
+    @keyframes slideIn {
+        0% {
+            opacity: 0;
+            transform: translateY(100px)
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     #dialog {
         display: flex;
         width: 100%;
@@ -447,7 +459,9 @@ todoModalTemplate.innerHTML = `
         padding: var(--v-padding) var(--h-padding);
         gap: var(--gap);
         filter: drop-shadow(0px 4px 10px rgba(0,0,0,0.5));
-        transition: transform var(--speed) ease-in-out, opacity var(--speed) ease;
+        // transition: transform var(--speed) ease-in-out, opacity var(--speed) ease;
+        animation: slideIn var(--speed) ease-in-out;
+        animation-fill-mode: forwards;
         transform: translateY(50px);
     }
 
@@ -530,6 +544,18 @@ class TodoModal extends HTMLElement {
             this.hide();
         }
 
+        this.shadowRoot.querySelector("input").onkeydown = (ev) => {
+            if(ev.key === "Enter") {
+                this.shadowRoot.querySelector("#confirm").click();
+            }
+        }
+
+        document.onkeydown = (ev) => {
+            if(ev.key === "Escape") {
+                this.hide();
+            }
+        }
+
         const input = this.shadowRoot.querySelector("input");
         this.shadowRoot.querySelector("#confirm").onclick = () => {
             if(input.value.trim() === "") return;
@@ -544,7 +570,6 @@ class TodoModal extends HTMLElement {
     }
 
     show(state) {
-
         let title;
         if(state === "tasks") {
             title = "Add Task";
@@ -553,6 +578,8 @@ class TodoModal extends HTMLElement {
         }
         this.shadowRoot.querySelector("h2").innerText = title;
         this.style.display = "flex";
+
+        this.shadowRoot.querySelector("#dialog").style.transform = "translateY(100px)";
     }
 
     hide() {
